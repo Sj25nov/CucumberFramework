@@ -1,39 +1,53 @@
 package stepdefinations;
 
-import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
+import io.cucumber.java.en.*;
+import org.junit.Assert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import java.time.Duration;
 
 public class Steps {
+    WebDriver driver;
+    @Given("the user is on the nopCommerce login page")
 
-    @Given("the user is on nonprocommerce login page")
-    public void the_user_is_on_nonprocommerce_login_page() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+    public void the_user_is_on_the_nop_commerce_login_page() {
+         driver=new ChromeDriver();
+        driver.get("https://tutorialsninja.com/demo/");
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        driver.manage().window().maximize();
+        driver.findElement(By.xpath("//ul[@class='list-inline']//li[@class='dropdown']")).click();
+        driver.findElement(By.xpath("//a[normalize-space()='Login']")).click();
     }
 
-    @When("the user gives the valid username and password\\(username: {string}, password: {string})")
-    public void the_user_gives_the_valid_username_and_password_username_password(String string, String string2) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+    @When("the user enters the username {string} and password {string}")
+    public void the_user_enters_the_username_and_password(String username, String Pass) {
+       driver.findElement(By.xpath ("//input[@id='input-email']")).sendKeys(username);
+        driver.findElement(By.xpath (  "//input[@id='input-password']")).sendKeys(Pass);
+
     }
 
-    @When("the user clicked on login button")
-    public void the_user_clicked_on_login_button() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+    @When("the user clicks on the login button")
+    public void the_user_clicks_on_the_login_button() {
+       driver.findElement(By.xpath("//input[@value='Login']")).click();
     }
 
-    @Then("the user should be redirected to my account page")
-    public void the_user_should_be_redirected_to_my_account_page() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+    @Then("the user should be redirected to the My Account page")
+    public void the_user_should_be_redirected_to_the_my_account_page() {
+boolean status=driver.findElement(By.xpath("//a[normalize-space()='Account']")).isDisplayed();
+Assert.assertEquals(status,true);
+
     }
 
-    @And("user should be see the welcome msg")
-    public void user_should_be_see_the_welcome_msg() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+    @Then("the user should see the welcome message")
+    public void the_user_should_see_the_welcome_message() {
+     boolean welcmmsg= driver.findElement(By.xpath("//h2[normalize-space()='My Account']")).isDisplayed();
+Assert.assertEquals(welcmmsg,true);
+     driver.quit();
+
+
     }
+
+
 }
